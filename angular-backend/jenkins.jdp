@@ -1,33 +1,46 @@
 pipeline {
     agent any
+
     environment {
         AWS_DEFAULT_REGION = 'ap-south-1'
     }
-    options {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-CRED']])
-    }
+
     stages {
-        stage('pull') {
+        stage('Pull Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/shubhamjain-tech/Angular-java-DevOps.git'
             }
         }
-        stage('build') {
+
+        stage('Build Backend') {
             steps {
                 dir('angular-backend') {  
                     sh 'mvn clean package'
                 }
             }
         }
-        stage('deploy') {
+
+        stage('Build & Push Docker Image') {
             steps {
-                dir('angular-backend') { 
+                dir('angular-backend') {
+                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS-CRED', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh '''
+                            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
+                            docker build -t angular-backend .
+                            docker tag angular-backend:latest 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
+                            docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
+                            docker rmi angular-backend:latest
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS-CRED', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
-                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
-                        docker build -t angular-backend .
-                        docker tag angular-backend:latest 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
-                        docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
-                        docker rmi angular-backend:latest
+                        aws eks update-kubeconfig --region ap-south-1 --name k8s
                         kubectl apply -f ./yaml/
                     '''
                 }
