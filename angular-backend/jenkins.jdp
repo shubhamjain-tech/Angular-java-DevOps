@@ -32,10 +32,10 @@ pipeline {
                     withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS-CRED', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh '''
                             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
-                            docker build -t angular-backend .
+                            docker build -t angular-backend:v1 .
                             docker tag angular-backend:latest 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:v1
                             docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:v1
-                            docker rmi angular-backend:v1
+            
                         '''
                     }
                 }
