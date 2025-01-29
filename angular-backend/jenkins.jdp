@@ -6,6 +6,12 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()  // Cleans the workspace before starting a new build
+            }
+        }
+
         stage('Pull Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/shubhamjain-tech/Angular-java-DevOps.git'
