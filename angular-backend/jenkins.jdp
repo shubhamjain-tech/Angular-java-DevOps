@@ -42,7 +42,7 @@ pipeline {
                     sh '''
                         pwd
                         aws eks update-kubeconfig --region ap-south-1 --name k8s
-                        kubectl apply -f ./angular-backend/yaml/
+                        kubectl apply -f angular-backend/yaml/
                     '''
                 }
             }
