@@ -7,18 +7,20 @@ pipeline {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-CRED']])
     }
     stages {
-        stage('pull'){
+        stage('pull') {
             steps {
                 git branch: 'main', url: 'https://github.com/shubhamjain-tech/Angular-java-DevOps.git'
             }
         }
-        stage('build'){
+        stage('build') {
             steps {
-                sh 'mvn clean package'
+                dir('angular-backend') {  // Change this to the correct subfolder
+                    sh 'mvn clean package'
+                }
             }
         }
-        stage('deploy'){
-            steps{
+        stage('deploy') {
+            steps {
                 sh '''
                     aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
                     docker build -t angular-backend .
@@ -28,7 +30,6 @@ pipeline {
                     kubectl apply -f ./yaml/
                 '''
             }
-
         }
     }
 }
