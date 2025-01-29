@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        AWS_DEFAULT_REGION = 'ap-south-1'
+    }
+    options {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS-CRED']])
+    }
     stages {
         stage('pull'){
             steps {
