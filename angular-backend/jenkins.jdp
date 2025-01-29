@@ -14,21 +14,23 @@ pipeline {
         }
         stage('build') {
             steps {
-                dir('angular-backend') {  // Change this to the correct subfolder
+                dir('angular-backend') {  
                     sh 'mvn clean package'
                 }
             }
         }
         stage('deploy') {
             steps {
-                sh '''
-                    aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
-                    docker build -t angular-backend .
-                    docker tag angular-backend:latest 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
-                    docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
-                    docker rmi angular-backend:latest
-                    kubectl apply -f ./yaml/
-                '''
+                dir('angular-backend') { 
+                    sh '''
+                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
+                        docker build -t angular-backend .
+                        docker tag angular-backend:latest 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
+                        docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
+                        docker rmi angular-backend:latest
+                        kubectl apply -f ./yaml/
+                    '''
+                }
             }
         }
     }
