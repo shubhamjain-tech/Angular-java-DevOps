@@ -14,9 +14,11 @@ pipeline {
         stage('deploy'){
             steps{
                 sh '''
-                    docker build . -t mayurwagh/com-backend:latest
-                    docker push mayurwagh/com-backend:latest
-                    docker rmi mayurwagh/com-backend:latest
+                    aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
+                    docker build -t angular-backend .
+                    docker tag angular-backend:latest 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
+                    docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
+                    docker rmi angular-backend:latest
                     kubectl apply -f ./yaml/
                 '''
             }

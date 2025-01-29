@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: com-backend-app
+  name: backend-app
   labels:
-    app: com-backend-app
+    app: backend-app
 spec:
   selector:
     matchLabels:
-      app: com-backend-app
+      app: backend-app
   replicas: 2
   template:
     metadata:
       labels:
-        app: com-backend-app
+        app: backend-app
     spec:
       containers:
-        - name: com-backend-app
-          image: shubhampatni123/angular-backend:latest
+        - name: backend-app
+          image: 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
           ports:
             - containerPort: 8080 
