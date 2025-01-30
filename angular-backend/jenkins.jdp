@@ -33,8 +33,8 @@ pipeline {
                         sh '''
                             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 396608779627.dkr.ecr.ap-south-1.amazonaws.com
                             docker build -t angular-backend .
-                            docker tag angular-backend:latest 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
-                            docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
+                            docker tag angular-backend:v1 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:v1
+                            docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:v1
                             cd ..
                             cd yaml
                             kubectl apply -f . 
