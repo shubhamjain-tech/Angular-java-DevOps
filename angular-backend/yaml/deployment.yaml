@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: backend-app
-          image: 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:v1
+          image: 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:latest
           ports:
             - containerPort: 8080 
