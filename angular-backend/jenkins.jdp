@@ -48,7 +48,6 @@ pipeline {
                         sh '''
                             pwd
                             aws eks update-kubeconfig --region ap-south-1 --name k8s
-                            ls -R   # Debugging to check directory structure
                             kubectl apply -f yaml/
                         '''
                     }
