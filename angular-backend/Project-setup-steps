@@ -47,9 +47,14 @@
       copy hidden folders
       cp -R ./.docker /var/lib/jenkins
 
+
+      Ensure that the Jenkins user is added to the docker group by running:
+      sudo usermod -aG docker jenkins
+
       configure aws cli 
       cp -R ./.aws /var/lib/jenkins
-      
+
+
 
       update kubeconfig this should be done by the jenkins user     
       aws eks update-kubeconfig --region ----  --name ---- 
