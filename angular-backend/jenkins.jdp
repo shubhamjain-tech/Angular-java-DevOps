@@ -36,7 +36,7 @@ pipeline {
                             docker tag angular-backend:v1 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:v1
                             docker push 396608779627.dkr.ecr.ap-south-1.amazonaws.com/angular-backend:v1
                             cd ..
-                            cd yaml
+                            cd angular-backend/yaml
                             kubectl apply -f . 
                         '''
                     }
