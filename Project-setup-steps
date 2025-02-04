@@ -1,11 +1,14 @@
 ### Steps to configure Database 
-    first step:
-    mysql -h endpt -u admin -pRedhat123
+    first step: 
+    create a RDS on aws console
+    install mysql on instance 
+    install mysql client 
+    mysql -h rds-endpt -u admin -pRedhat123
     create database springbackend:
     exit
     second step:
-    to import sql file in database
-    mysql -h endpt -u admin -pRedhat123 springbackend < springbackend.sql 
+    to import sql file in database 
+    mysql -h endpt -u admin -pRedhat123 springbackend < springbackend.sql (this comand run form angular-backend folder)
 
     now check in database 
     (your schema should imported)
